@@ -28,7 +28,7 @@ function preload() {
 function setup() {
   createCanvas(windowWidth, windowHeight);
   speed = 5; //faten for musen
-  speedC = 5; //farten for katten
+  speedC = 5; //Max hastighed for katten
   d = 50; //diameter for musen
   a = 0; //a og b er retningsvektorer for musen
   b = 0;
@@ -48,6 +48,7 @@ function setup() {
 }
 
 //Draw funktionen kører dens indhold en gang per frame
+//Hver kan draw kører bliver max hastiheden for kattene forøget med 0.005, så det bliver sværere og sværere at undgå dem jo længere tid man overlever.
 function draw() {
   background(220);
   entities();
@@ -55,6 +56,8 @@ function draw() {
   move();
   Barrier();
   death();
+  speedC += 0.001;
+  print(speedC);
 }
 
 //barrier funktionen sørger for at ingen af entiteterne forlader skærmen.
@@ -87,27 +90,27 @@ function Barrier() {
 
   if (catY1 / 2 <= 0) {
     catA1 = random(-speedC, speedC);
-    catB1 = random(1, speedC);
+    catB1 = random(5, speedC);
   }
 
   if (catX2 + catD >= windowWidth) {
-    catA2 = random(-1, -speedC);
+    catA2 = random(-5, -speedC);
     catB2 = random(-speedC, speedC);
   }
 
   if (catX2 / 2 <= 0) {
-    catA2 = random(1, speedC);
+    catA2 = random(5, speedC);
     catB2 = random(-speedC, speedC);
   }
 
   if (catY2 + catD >= windowHeight) {
     catA2 = random(-speedC, speedC);
-    catB2 = random(-1, -speedC);
+    catB2 = random(-5, -speedC);
   }
 
   if (catY2 / 2 <= 0) {
     catA2 = random(-speedC, speedC);
-    catB2 = random(1, speedC);
+    catB2 = random(5, speedC);
   }
 }
 
@@ -148,7 +151,7 @@ function keyPressed() {
   }
 }
 
-//denne funktion viser spillerens afrundede score, og forøger scoren med 1/100 hver gang den kører (hvilket bliver til cirka 1 gang i sekundet)
+//denne funktion viser spillerens afrundede score, og forøger scoren med 1/100 hver gang den kører (cirka 1 gang i sekundet) hvis spilleren er i live.
 function showScore() {
   textSize(32);
   if (alive == true) {
@@ -159,6 +162,8 @@ function showScore() {
 
 //death funktionen holder øje med om musen rammer en af de to katte
 //Hvis musen rammer en af kattende, bliver speed og hastihedsvektorne sat til 0, så entiteterne ikke længere bevæger sig.
+//Derudover bliver alive sat til false, så scoren ikke længere forøges.
+//Der bliver også skrevet en tekst på skærmen, som fortæller spilleren at de har tabt, samt hvad deres score er.
 function death() {
   if (
     (x + d > catX1 && x < catX1 + catD && y + d > catY1 && y < catY1 + catD) ||
@@ -168,8 +173,15 @@ function death() {
     fill(0);
     rect(0, windowHeight - windowHeight / 4, windowWidth, windowHeight);
     fill(255);
-    textSize(100);
-    text("You died", windowWidth / 2, windowHeight - windowHeight / 16);
+    textSize(75);
+    text("You died", windowWidth / 2 - 150, windowHeight - windowHeight / 7);
+    textSize(50);
+    text(
+      "Your score is " + Math.floor(score),
+      windowWidth / 2 - 175,
+      windowHeight - windowHeight / 7 + 75
+    );
+
     a = 0;
     b = 0;
     catA1 = 0;
@@ -180,4 +192,3 @@ function death() {
     alive = false;
   }
 }
-//hmmm
