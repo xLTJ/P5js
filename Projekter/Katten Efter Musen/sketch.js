@@ -1,4 +1,4 @@
-//til at starte med laver jeg alle de variabler jeg skal bruge
+//til at starte med erklærer jeg alle de variabler jeg skal bruge
 let x;
 let y;
 let catX1;
@@ -24,7 +24,7 @@ function preload() {
   MousePic = loadImage("Mouse.png");
 }
 
-//Her sætter jeg variablerne til de værdier jeg vil have dem til at være.
+//Her tildeler jeg værdier til variablerne.
 function setup() {
   createCanvas(windowWidth, windowHeight);
   speed = 5; //faten for musen
